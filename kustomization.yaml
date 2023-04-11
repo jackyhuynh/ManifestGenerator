@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - default-manifest.yaml
+  - mtls-enforcement.yaml
+  - istio-cni-plugin.yaml
+patches:
+  - patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: docker.artifacts.tak.gov/ironbank/opensource/istio/pilot:1.14.3
+    target:
+      kind: Deployment
+      name: "istiod"
+  - patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: docker.artifacts.tak.gov/ironbank/opensource/istio/proxyv2:1.14.3
+    target:
+      kind: Deployment
+      name: "istio-ingressgateway"
+  - patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: docker.artifacts.tak.gov/ironbank/opensource/istio/proxyv2:1.14.3
+    target:
+      kind: Deployment
+      name: "istio-egressgateway"
