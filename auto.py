@@ -133,9 +133,9 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
 
     for chart in CHARTS:
 
-        # print(f'[*] Generating ${MANIFESTS_DIR}/${dir_}/${chart}.yaml')
+        print(f'[*] Generating ${MANIFESTS_DIR}/${dir_}/${chart}.yaml')
 
-        # print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
+        print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
 
         unique_values = ''
         if os.path.exists(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml'):
