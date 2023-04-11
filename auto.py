@@ -97,7 +97,7 @@ cwd = os.getcwd()
 # Check if helm is install on the machine
 helm_result = subprocess.run(['helm', 'version'], shell=True, capture_output=True, text=True)
 
-if helm_result.returncode == 1:
+if helm_result.returncode is not 0:
     print("Helm is not installed, you can follow the installation instructions for your operating system on the "
           "official Helm website: https://helm.sh/docs/intro/install/")
     exit(1)
