@@ -1,0 +1,9 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: "istio-cni-plugin"
+  namespace: "istio-system"
+spec:
+  components:
+    cni:
+      enabled: true
