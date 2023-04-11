@@ -107,9 +107,12 @@ check_or_create_a_directory(f'{cwd}{LASH}{MANIFESTS_DIR}')
 check_or_create_a_directory(f'{cwd}{LASH}{VALUES_DIR}')
 
 # connect to the upstream Helm repository
-process_validation('add repo to the upstream', subprocess.run(['helm', 'repo', 'add', 'istio', 'https://istio-release.storage.googleapis.com/charts'], shell=True,
-                   capture_output=True, text=True).returncode)
-process_validation('update helm repo', subprocess.run(['helm', 'repo', 'update'], shell=True, capture_output=True, text=True).returncode)
+process_validation('add repo to the upstream',
+                   subprocess.run('helm repo add istio https://istio-release.storage.googleapis.com/charts', shell=True,
+                                  capture_output=True, text=True).returncode)
+
+process_validation('update helm repo',
+                   subprocess.run('helm repo update', shell=True, capture_output=True, text=True).returncode)
 
 # create the default value
 check_or_create_a_directory(f'{cwd}{LASH}{VALUES_DIR}{LASH}default')
@@ -118,7 +121,8 @@ check_or_create_a_directory(f'{cwd}{LASH}{VALUES_DIR}{LASH}default')
 for chart in CHARTS:
     # print(chart)
     process_validation(f'creating {chart}', subprocess.run(
-        ['helm', 'show', 'values', f'istio/{chart}', '>', f"{VALUES_DIR}{LASH}default{LASH}{chart}-default-values.yaml"],
+        ['helm', 'show', 'values', f'istio/{chart}', '>',
+         f"{VALUES_DIR}{LASH}default{LASH}{chart}-default-values.yaml"],
         shell=True, capture_output=True, text=True).returncode)
 
 for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
