@@ -9,7 +9,7 @@ import subprocess
 """
 
 # The CHARTS hold the different chart
-CHARTS = ["base", "istiod", "gateway"]
+CHARTS = ["base", "istiod", "gateway", "cni"]
 
 # The Manifest directories store the manifest template
 # The value directories store the value that need to pair with the manifest
@@ -98,11 +98,6 @@ def process_validation(process_name, val_code):
 
 # The directory Signed
 LASH = signed_directory_creation()
-cwd = os.getcwd()
-# print(f'Current directory is {os.getcwd()}')
-
-# move backward to the main directory
-navigate_backward()
 
 # Check if helm is install on the machine
 # Terminate if not install
@@ -110,6 +105,13 @@ if subprocess.run('helm version', shell=True, capture_output=True, text=True).re
     print("Helm is not installed, you can follow the installation instructions for your operating system on the "
           "official Helm website: https://helm.sh/docs/intro/install/")
     exit(1)
+
+# move backward to the main directory
+navigate_backward()
+
+# Assigned current working directory
+cwd = os.getcwd()
+# print(f'Current directory is {os.getcwd()}')
 
 # Validate if the manifest directory and values directory is existed
 check_or_create_a_directory(f'{cwd}{LASH}{MANIFESTS_DIR}')
@@ -144,13 +146,13 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
     check_or_create_a_directory(f'{os.getcwd()}{LASH}{MANIFESTS_DIR}{LASH}{dir_}')
 
     for chart in CHARTS:
-        print(f'[*] Generating ${MANIFESTS_DIR}/${dir_}/${chart}.yaml')
+        print(f'[*] Generating {MANIFESTS_DIR}/{dir_}/{chart}.yaml')
 
         # print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
         # unique values
         unique_values = ''
         if os.path.exists(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml'):
-            unique_values = f"-f ${VALUES_DIR}{LASH}{dir}{LASH}{chart}-values.yaml"
+            unique_values = f"-f {VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml"
             print(unique_values)
 
         extra_install_values = '--include-crds --create-namespace'
