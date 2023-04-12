@@ -126,13 +126,11 @@ process_validation('update helm repo',
 # create the default value
 check_or_create_a_directory(f'{cwd}{LASH}{VALUES_DIR}{LASH}default')
 
+
 # create the content in default folder:
 for chart in CHARTS:
-    # print(chart)
-    process_validation(f'creating {chart}', subprocess.run(
-        ['helm', 'show', 'values', f'istio/{chart}', '>',
-         f"{VALUES_DIR}{LASH}default{LASH}{chart}-default-values.yaml"],
-        shell=True, capture_output=True, text=True).returncode)
+    command = ['helm', 'show', 'values', f'istio/{chart}', '>', f"{VALUES_DIR}{LASH}default{LASH}{chart}-default-values.yaml"]
+    process_validation(f'creating {chart}', subprocess.run(command, shell=True, capture_output=True, text=True).returncode)
 
 for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
 
@@ -140,16 +138,16 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
     if dir_ == 'default':
         continue
 
+    # Check if we have the corresponding name in the manifest directory
+    # If not we need to create one
+    # This is needed for the helm template command
     check_or_create_a_directory(f'{os.getcwd()}{LASH}{MANIFESTS_DIR}{LASH}{dir_}')
-    # print(dir_)
-    # print(f'current directory is {os.getcwd()}')
 
     for chart in CHARTS:
-
         print(f'[*] Generating ${MANIFESTS_DIR}/${dir_}/${chart}.yaml')
 
-        print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
-
+        # print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
+        # unique values
         unique_values = ''
         if os.path.exists(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml'):
             unique_values = f"-f ${VALUES_DIR}{LASH}{dir}{LASH}{chart}-values.yaml"
@@ -167,18 +165,9 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
         process_validation(f'generate {chart} manifest',
                            subprocess.run(command, shell=True, capture_output=True, text=True).returncode)
 
-
-
-
-
-
-
-
-
 """
-This version is to install the helm chart and pull it
+This version is to install the helm chart and pull it from git
 """
-
 # # Use Subprocess to move to a real directory
 # # Create the helm_chart directory
 # subprocess.run(['mkdir', 'helmchart'], shell=True)
