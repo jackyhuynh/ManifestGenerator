@@ -149,7 +149,6 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
         print(f'[*] Generating {MANIFESTS_DIR}/{dir_}/{chart}.yaml')
 
         # print(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml')
-        # unique values
         unique_values = ''
         if os.path.exists(f'{os.getcwd()}{LASH}{VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml'):
             unique_values = f"-f {VALUES_DIR}{LASH}{dir_}{LASH}{chart}-values.yaml"
@@ -163,7 +162,7 @@ for dir_ in os.listdir(f'{os.getcwd()}{LASH}{VALUES_DIR}'):
             name_space = 'kube-system'
 
         command = f'helm template istio istio/{chart} --namespace {name_space} {extra_install_values} {unique_values} > {MANIFESTS_DIR}{LASH}{dir_}{LASH}{chart}.yaml'
-        print(command)
+        # print(command)
         process_validation(f'generate {chart} manifest',
                            subprocess.run(command, shell=True, capture_output=True, text=True).returncode)
 
