@@ -1,3 +1,4 @@
+Manifest Generator enables the platform engineer to generate the custom template in staging to build the eksCluster
 .
 └── istio/
     ├── manifest/
