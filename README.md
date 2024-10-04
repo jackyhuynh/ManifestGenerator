@@ -1,4 +1,6 @@
 Manifest Generator enables the platform engineer to generate the custom template in staging to build the eksCluster
+
+```bash
 .
 └── istio/
     ├── manifest/
@@ -9,3 +11,4 @@ Manifest Generator enables the platform engineer to generate the custom template
     ├── values/
     │   └── tpc-stage-eksCluster-adc8850
     └── readme.md
+```
